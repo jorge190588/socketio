@@ -12,13 +12,32 @@ app.get('/', function (req, res) {
 app.get('/cliente', function (req, res) {
     res.sendFile(__dirname + '/cliente.html');
   });
-var users= 0;
+
+var users= {};
 
 io.on('connection', function (socket) {
-    console.log('connection event is execute');
-    socket.emit('news', { hello: 'umg', id:users+1 });
-    socket.on('emitToServer', function (data) {
-        
+    console.log('connection ');
+    //socket.emit('news', { hello: 'umg' });
+    socket.on('sendUser', function(data) {
+        users[data.user]={};
+        console.log("username",data.user);
+        console.log("users",users);
+    })
+
+    socket.on("disconnectUser",function(data){
+        delete users[data.user];
+        console.log("users",users);
+    })
+
+    socket.on('emitToServer', function (data) {    
         console.log(data);
     });
+
+    socket.on('disconnect', function(event){
+        console.log(" disconnected.",event);
+        //delete users[data.user];
+        
+        //io.sockets.emit("liveusers",Object.keys(onlineUsers));
+  });
+
 });

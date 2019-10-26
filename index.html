@@ -9,16 +9,31 @@
     <script>
     var id=0;
     var socket = io.connect('http://localhost');
-    socket.on('news', function (data) {
+    //socket.emit('sendUser', "jorge");
+    /*socket.on('news', function (data) {
         console.log(data);
         id=data.id;
         window.id=data.id;
         socket.emit('emitToServer', { my: 'data' });
-    });
+    });*/
+
+    function disconnectUser(){
+        var user= document.getElementById("user").value;
+        socket.emit('disconnectUser', {user: user});
+    }
+    function connectUser(){
+        var user= document.getElementById("user").value;
+        socket.emit('sendUser', {user: user});    
+    }
     </script>
 </head>
 <body>
     <h1>SOCKET.IO example</h1>
-    <h2 id="id"></h2>
+    <input id="user" value="jorge"></input>
+    <button id="userLogin" onclick="connectUser()">Registro</button>
+    <button id="userLogin" onclick="disconnectUser()">Disconnet</button>
+    <script>
+
+    </script>
 </body>
 </html>
