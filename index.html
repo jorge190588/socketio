@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inidex</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var id=0;
+    var socket = io.connect('http://localhost');
+    socket.on('news', function (data) {
+        console.log(data);
+        id=data.id;
+        window.id=data.id;
+        socket.emit('emitToServer', { my: 'data' });
+    });
+    </script>
+</head>
+<body>
+    <h1>SOCKET.IO example</h1>
+    <h2 id="id"></h2>
+</body>
+</html>
