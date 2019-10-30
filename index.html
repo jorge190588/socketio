@@ -7,8 +7,6 @@
     <title>Inidex</title>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-    var id=0;
-    var socket = io.connect('http://localhost');
     //socket.emit('sendUser', "jorge");
     /*socket.on('news', function (data) {
         console.log(data);
@@ -16,6 +14,15 @@
         window.id=data.id;
         socket.emit('emitToServer', { my: 'data' });
     });*/
+
+    var socket = io.connect('http://localhost');
+    socket.on("userList",function(data){
+        var list= document.getElementById("userList");
+        list.innerHTML="";
+        Object.keys(data).forEach(function(userName, value) {
+            list.innerHTML+="<li>"+userName+"</li>";
+        });
+    });
 
     function disconnectUser(){
         var user= document.getElementById("user").value;
@@ -25,6 +32,7 @@
         var user= document.getElementById("user").value;
         socket.emit('sendUser', {user: user});    
     }
+    //https://socket.io/get-started/chat
     </script>
 </head>
 <body>
@@ -32,8 +40,6 @@
     <input id="user" value="jorge"></input>
     <button id="userLogin" onclick="connectUser()">Registro</button>
     <button id="userLogin" onclick="disconnectUser()">Disconnet</button>
-    <script>
-
-    </script>
+    <ul id="userList"></ul>
 </body>
 </html>

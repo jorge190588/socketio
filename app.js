@@ -14,30 +14,31 @@ app.get('/cliente', function (req, res) {
   });
 
 var users= {};
-
 io.on('connection', function (socket) {
     console.log('connection ');
     //socket.emit('news', { hello: 'umg' });
     socket.on('sendUser', function(data) {
         users[data.user]={};
+        socket.emit("userList",users);
         console.log("username",data.user);
         console.log("users",users);
     })
 
     socket.on("disconnectUser",function(data){
         delete users[data.user];
+        socket.emit("userList",users);
         console.log("users",users);
     })
+
+    socket.on('disconnect', function(event){
+        console.log(" disconnected.",event);
+        //delete users[data.user];    
+        //io.sockets.emit("liveusers",Object.keys(onlineUsers));
+    });
 
     socket.on('emitToServer', function (data) {    
         console.log(data);
     });
 
-    socket.on('disconnect', function(event){
-        console.log(" disconnected.",event);
-        //delete users[data.user];
-        
-        //io.sockets.emit("liveusers",Object.keys(onlineUsers));
-  });
 
 });
